@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 @Service
 public class MenuService {
-
-    @Autowired
-    private ProcessAnaliz process;
 
     @Autowired
     private CharRepos charRepos;
@@ -60,23 +61,42 @@ public class MenuService {
                     Scanner scannerNew = new Scanner(System.in);
                     System.out.println("Хотите добавить свойство к " + subject + " (0 - нет/1-да)");
                     comm = scanner.nextInt();
+                    if(comm == 0){
+                        break;
+                    }
                         System.out.println("Введите название характеристики, которую хотите добавить: ");
                         String val = scannerNew.nextLine();
                         if (val != "") {
                             Characteristic characteristic = charRepos.findByValue(val);
                             if (characteristic != null) {
+                                characteristic.getSubjects().add(subject1);
                                 subject1.getCharacteristics().add(characteristic);
                             } else {
                                 System.out.println("Нету такой характеристики!");
                             }
                         }
                 }
-                subjectRepos.save(subject1);
+                subjectRepos.save(Objects.requireNonNull(subject1));
                 break;
 
             case 6:
                 System.out.println("Запустить систему.");
-                process.process();
+
+                Map<String, List<String>> objWithСharacteristics = subjectRepos.findAll().stream()
+                        .collect(
+                                Collectors.toMap
+                                        (
+                                                Subject::getValue,
+                                                x -> x.getCharacteristics().stream()
+                                                        .map(Characteristic::getValue).toList()
+                                        )
+                        );
+
+
+                ProcessAnaliz process = new ProcessAnaliz(
+                        charRepos.findAll().stream().map(Characteristic::getValue).toList()
+                );
+                process.process(objWithСharacteristics);
                 break;
 
             default:

@@ -36,4 +36,6 @@ public class Subject {
 
     @ManyToMany(mappedBy = "subjects")
     private List<Characteristic> characteristics = new ArrayList<>();
+
+
 }

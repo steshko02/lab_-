@@ -45,4 +45,9 @@ public class Characteristic {
             inverseJoinColumns = @JoinColumn(name = "characteristics_id")
     )
     private List<Subject> subjects = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return value;
+    }
 }

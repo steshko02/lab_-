@@ -19,15 +19,6 @@ import java.util.Scanner;
 public class DemoApplication {
 
     @Autowired
-    private ProcessAnaliz process;
-
-    @Autowired
-    private CharRepos charRepos;
-
-    @Autowired
-    private SubjectRepos subjectRepos;
-
-    @Autowired
     private MenuService menuService;
 
     public static void main(String[] args) {

@@ -1,8 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Characteristic;
+import com.example.demo.entity.Subject;
+import com.example.demo.repos.CharRepos;
+import com.example.demo.repos.SubjectRepos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,29 +16,24 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-@Service
 public class ProcessAnaliz {
-
 
     Map<String, List<String>> objWithСharacteristicsInProcess;
 
     Callback callback = m -> objWithСharacteristicsInProcess = m;
 
-    List<String> characteristics = List.of("Крылья", "Лапки", "Хвост", "Зубы",
-            "Шерсть", "Шасси", "Винт", "Хуй", "жопа", "Нос", "Рот");
+    List<String> characteristics ;
 
-    public void process() {
+    public ProcessAnaliz(List<String> characteristics) {
+        this.characteristics = characteristics;
+    }
+
+    public void process(Map<String, List<String>> map) {
         Scanner scannerInt = new Scanner(System.in);
-        int command = scannerInt.nextInt();
 
-        Map<String, List<String>> objWithСharacteristics = new HashMap<>();
-
-        objWithСharacteristics.put("Птица", List.of("Крылья", "Лапки"));
-        objWithСharacteristics.put("Пёс", List.of("Лапки", "Хвост", "Зубы", "Шерсть"));
-        objWithСharacteristics.put("Самолет", List.of("Крылья", "Шасси", "Винт"));
-
-        objWithСharacteristicsInProcess = new HashMap<>(objWithСharacteristics);
+        objWithСharacteristicsInProcess = new HashMap<>(map);
 
         redoListOf("");
 
